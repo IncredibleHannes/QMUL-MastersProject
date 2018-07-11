@@ -24,7 +24,7 @@ epsilonSup xs = J(epsilonSup' xs)
 
 epsilonSup' :: (Ord b) => [a] -> (a -> b) -> a
 epsilonSup' [] _ = undefined
-epsilonSup' xs f = head $ reverse $ sortOn f xs
+epsilonSup' xs f = last $ sortOn f xs
 
 epsilonInfThree :: [a] -> J Three a
 epsilonInfThree xs = J(epsilonInf' xs)
@@ -35,8 +35,8 @@ epsilonInfThree' [x] _    = x
 epsilonInfThree' (x:xs) f | f x == 1 = epsilonInfThree' xs f
                           | f x == -1  = x
                           | otherwise = case findInf xs f of
-                                          (Just y)  -> y
-                                          (Nothing) -> x
+                                          (Just y) -> y
+                                          Nothing  -> x
     where findInf [] _     = Nothing
           findInf (x:xs) f = if f x == -1 then Just x else findInf xs f
 
@@ -49,8 +49,8 @@ epsilonSupThree' [x] _    = x
 epsilonSupThree' (x:xs) f | f x == -1 = epsilonSupThree' xs f
                           | f x == 1  = x
                           | otherwise = case findSup xs f of
-                                          (Just y)  -> y
-                                          (Nothing) -> x
+                                          (Just y) -> y
+                                          Nothing  -> x
     where findSup [] _     = Nothing
           findSup (x:xs) f = if f x == 1 then Just x else findSup xs f
 

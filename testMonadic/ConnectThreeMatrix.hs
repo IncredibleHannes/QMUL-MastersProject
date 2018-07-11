@@ -20,7 +20,7 @@ data Player = X | O | N
   deriving (Eq, Show)
 
 wins :: Board -> Player -> Bool
-wins b p = checkWin 1 1 b p
+wins = checkWin 1 1
   where
     checkWin :: Int -> Int -> Board -> Player -> Bool
     checkWin 4 3 _ _ = False
@@ -46,10 +46,10 @@ changePlayer X = O
 changePlayer O = X
 
 p :: [Move] -> R
-p ms = value(outcome X ms (matrix 5 3 $ (\_-> N)))
+p ms = value(outcome X ms (matrix 5 3 (const N)))
 
 insert :: Move -> Player -> Board -> Board
-insert m p b = insert' (m,1) p b
+insert m = insert' (m,1)
   where
     insert' (x,y) p b = if b ! (x,y) == N
                         then setElem p (x,y) b
@@ -57,7 +57,7 @@ insert m p b = insert' (m,1) p b
 
 getPossibleMoves :: [Move] -> [Move]
 getPossibleMoves [] = [1..5]
-getPossibleMoves xs = filter (\x -> (length $ L.elemIndices x xs) < 3) [1..5]
+getPossibleMoves xs = filter (\x -> length (L.elemIndices x xs) < 3) [1..5]
 
 epsilons :: [[Move] -> J R Move]
 epsilons = take 9 all

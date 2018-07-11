@@ -13,7 +13,7 @@ data Player = X | O
   deriving (Eq)
 
 wins :: Board -> Player -> Bool
-wins b p = checkWin 0 0 b p
+wins = checkWin 0 0
   where
     checkWin :: Int -> Int -> Board -> Player -> Bool
     checkWin 0 6 _ _ = False
@@ -47,12 +47,12 @@ p ms = value(outcome X ms [[]])
 insert :: Move -> Player -> Board -> Board
 insert 1 p (x:xs) = (x ++ [p]) : xs
 insert 1 p []     = [[p]]
-insert m p (x:xs) = x : (insert (m - 1) p xs)
-insert m p []     = [] : (insert (m - 1) p [])
+insert m p (x:xs) = x : insert (m - 1) p xs
+insert m p []     = [] : insert (m - 1) p []
 
 getPossibleMoves :: [Move] -> [Move]
 getPossibleMoves [] = [1..7]
-getPossibleMoves xs = filter (\x -> (length $ L.elemIndices x xs) < 6) [1..7]
+getPossibleMoves xs = filter (\x -> length (L.elemIndices x xs) < 6) [1..7]
 
 epsilons :: [[Move] -> J R Move]
 epsilons = take 42 all
