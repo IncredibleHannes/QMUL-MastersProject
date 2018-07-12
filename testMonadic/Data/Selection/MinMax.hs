@@ -1,5 +1,5 @@
 
-module InfSupSelections (Three,
+module Data.Selection.MinMax (Three,
                          epsilonInf, epsilonSup,
                          epsilonInfThree, epsilonSupThree,
                          epsilonInfBool, epsilonSupBool,
@@ -8,7 +8,7 @@ module InfSupSelections (Three,
                          epsilonSupTupleParalell, epsilonInfTupleParalell)
 where
 
-import J
+import Data.Selection.J
 import Control.Parallel.Strategies
 import Data.List
 
