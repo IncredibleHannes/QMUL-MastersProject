@@ -2,9 +2,9 @@
     Time without paralell: 202.44s
     Time with paralell:      3.06s
 -}
-import Data.Selection
-import Data.Matrix
-import qualified Data.List as L
+import qualified Data.List      as L
+import           Data.Matrix
+import           Data.Selection
 
 gameName = "ConnectThreeMatrixTuple"
 
@@ -34,7 +34,7 @@ value b  | wins b X  = 1
 outcome :: Player -> [Move] -> Board -> Int -> (Board,Int)
 outcome _ [] b i       = (b, i)
 outcome p (m : ms) b i = let nb = insert m p b in
-                       if wins nb p then (nb, i+1) else outcome (changePlayer p) ms nb (i+1)
+                         if wins nb p then (nb, i+1) else outcome (changePlayer p) ms nb (i+1)
 
 changePlayer :: Player -> Player
 changePlayer X = O

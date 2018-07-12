@@ -1,6 +1,6 @@
 
-import qualified Data.List as L
-import Data.Selection
+import qualified Data.List      as L
+import           Data.Selection
 
 gameName = "ConnectFour"
 

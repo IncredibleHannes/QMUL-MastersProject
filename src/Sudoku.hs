@@ -3,9 +3,9 @@
   time | 0.05| 0.11| 0.22| 0.44| 0.93| 1.87| 3.96| 7.91|16.51| 34.25| 68.33|147.08|
 -}
 
-import qualified Data.List as L
-import Data.Selection
-import Data.Matrix
+import qualified Data.List      as L
+import           Data.Matrix
+import           Data.Selection
 
 gameName = "Sudoku"
 

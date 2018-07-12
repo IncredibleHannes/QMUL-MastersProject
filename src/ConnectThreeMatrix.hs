@@ -6,9 +6,9 @@
 
 module ConnectThreeMatrix (gameName, R, Move, p, epsilons) where
 
-import qualified Data.List        as L
-import Data.Matrix
-import Data.Selection
+import qualified Data.List      as L
+import           Data.Matrix
+import           Data.Selection
 
 gameName = "ConnectThreeMatrix"
 
