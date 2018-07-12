@@ -31,24 +31,24 @@ module Data.Selection
 
   -- * minimum and maximum implementations
   -- ** generic implementations
-  , epsilonInf
-  , epsilonSup
+  , epsilonMin
+  , epsilonMax
   -- ** for {-1,0,1}
-  , epsilonInfThree
-  , epsilonSupThree
+  , epsilonMinThree
+  , epsilonMaxThree
   -- ** for booleans
-  , epsilonInfBool
-  , epsilonSupBool
+  , epsilonMinBool
+  , epsilonMaxBool
   -- ** for length tracking tuples ({1,0,-1}, Int)
-  , epsilonInfTuple
-  , epsilonSupTuple
+  , epsilonMinTuple
+  , epsilonMaxTuple
   -- ** paralell implementations
   -- *** generic
-  , epsilonSupParalell
-  , epsilonInfParalell
+  , epsilonMaxParalell
+  , epsilonMinParalell
   -- *** length tracking tuples ({1,0,-1}, Int)
-  , epsilonSupTupleParalell
-  , epsilonInfTupleParalell
+  , epsilonMaxTupleParalell
+  , epsilonMinTupleParalell
 
   -- * Optimal game strategies
   , optimalPlay

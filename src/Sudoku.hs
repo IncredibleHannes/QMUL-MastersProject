@@ -65,7 +65,7 @@ p ms = wins(outcome ms startingBoard)
 epsilons :: [[Move] -> J R Move]
 epsilons = take 5 all
   where all = epsilon' : all
-        epsilon' history = epsilonSupBool (getPossibleMoves (startingMoves ++ history))
+        epsilon' history = epsilonMaxBool (getPossibleMoves (startingMoves ++ history))
 
 main :: IO ()
 main = do

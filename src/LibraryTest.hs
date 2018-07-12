@@ -60,8 +60,8 @@ epsilons = epsilons' []
 epsilons' :: [Move] -> [[Move] -> J R Move]
 epsilons' h = take (9 + length h) all
   where all = epsilonX : epsilonO : all
-        epsilonX history = epsilonSupTuple (getPossibleMoves (h ++ history))
-        epsilonO history = epsilonInfTuple (getPossibleMoves (h ++ history))
+        epsilonX history = epsilonMaxTuple (getPossibleMoves (h ++ history))
+        epsilonO history = epsilonMinTuple (getPossibleMoves (h ++ history))
 
 main :: IO ()
 main = do

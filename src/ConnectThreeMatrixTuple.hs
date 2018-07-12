@@ -60,8 +60,8 @@ p ms = let o = outcome X ms (matrix 5 3 (const N)) 0 in (value $ fst o, snd o)
 epsilons :: [[Move] -> J R Move]
 epsilons = take 9 all
   where all = epsilonX : epsilonO : all
-        epsilonX history = epsilonSupTupleParalell (getPossibleMoves history)
-        epsilonO history = epsilonInfTupleParalell (getPossibleMoves history)
+        epsilonX history = epsilonMaxTupleParalell (getPossibleMoves history)
+        epsilonO history = epsilonMinTupleParalell (getPossibleMoves history)
 
 main :: IO ()
 main = do

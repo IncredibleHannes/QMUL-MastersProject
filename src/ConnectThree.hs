@@ -53,8 +53,8 @@ p ms = value(outcome X ms [[]])
 epsilons :: [[Move] -> J R Move]
 epsilons = take 9 all
   where all = epsilonX : epsilonO : all
-        epsilonX history = epsilonSupThree (getPossibleMoves history)
-        epsilonO history = epsilonInfThree (getPossibleMoves history)
+        epsilonX history = epsilonMaxThree (getPossibleMoves history)
+        epsilonO history = epsilonMinThree (getPossibleMoves history)
 
 main :: IO ()
 main = do
