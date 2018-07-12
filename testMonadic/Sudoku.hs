@@ -47,6 +47,8 @@ outcome :: [Move] -> Board -> Board
 outcome [] b     = b
 outcome (x:xs) b = let nb = insert x b in if wins nb then outcome xs nb else nb
 
+-- Check only the inserted position
+
 p :: [Move] -> R
 p ms = wins(outcome ms startingBoard)
 

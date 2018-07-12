@@ -1,8 +1,16 @@
+{-
+  An optimal play for ConnectThreeMatrixTuple is [2,4,3,1,2,2,3,5,1]
+  and the optimal outcome is (1,9)
+  (1605.20 secs, 554,498,563,864 bytes)
+-}
+
 module InfSupSelections (Three,
                          epsilonInf, epsilonSup,
                          epsilonInfThree, epsilonSupThree,
                          epsilonInfBool, epsilonSupBool,
-                         epsilonParalellMax)
+                         epsilonParalellMax, epsilonParalellMin,
+                         epsilonSupTuple, epsilonInfTuple,
+                         epsilonSupTupleParalell, epsilonInfTupleParalell)
 where
 
 import J
@@ -25,6 +33,51 @@ epsilonSup xs = J(epsilonSup' xs)
 epsilonSup' :: (Ord b) => [a] -> (a -> b) -> a
 epsilonSup' [] _ = undefined
 epsilonSup' xs f = last $ sortOn f xs
+
+epsilonInfTuple :: [a] -> J (Int, Int) a
+epsilonInfTuple xs = J(epsilonInfTuple' xs)
+
+
+epsilonInfTuple' :: [a] -> (a -> (Int, Int)) -> a
+epsilonInfTuple' [] _ = undefined
+epsilonInfTuple' xs f = let list = sortOn fst (map (\x -> (f x, x)) xs) in
+                            if  fst (fst $ head list) == 1
+                            then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
+                            else snd $ head list
+
+epsilonSupTuple :: [a] -> J (Int, Int) a
+epsilonSupTuple xs = J(epsilonSupTuple' xs)
+
+-- TODO: Find more performant version
+epsilonSupTuple' :: [a] -> (a -> (Int, Int)) -> a
+epsilonSupTuple' [] _ = undefined
+epsilonSupTuple' xs f = let list = reverse $ sortOn fst (map (\x -> (f x, x)) xs) in
+                            if  fst (fst $ head list) /= -1
+                            then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
+                            else snd $ head list
+
+epsilonInfTupleParalell :: (NFData a) => [a] -> J (Int, Int) a
+epsilonInfTupleParalell xs = J(epsilonInfTupleParalell' xs)
+
+
+epsilonInfTupleParalell' :: (NFData a) => [a] -> (a -> (Int, Int)) -> a
+epsilonInfTupleParalell' [] _ = undefined
+epsilonInfTupleParalell' xs f = let list = sortOn fst (map (\x -> (f x, x)) xs) in
+                            if  fst (fst $ head list) == 1
+                            then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
+                            else snd $ head list
+
+epsilonSupTupleParalell :: (NFData a) => [a] -> J (Int, Int) a
+epsilonSupTupleParalell xs = J(epsilonSupTuple' xs)
+
+-- TODO: Find more performant version
+epsilonSupTupleParalell' :: (NFData a) => [a] -> (a -> (Int, Int)) -> a
+epsilonSupTupleParalell' [] _ = undefined
+epsilonSupTupleParalell' xs f = let list = reverse $ sortOn fst (parMap rdeepseq (\x -> (f x, x)) xs) in
+                            if  fst (fst $ head list) /= -1
+                            then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
+                            else snd $ head list
+
 
 epsilonInfThree :: [a] -> J Three a
 epsilonInfThree xs = J(epsilonInf' xs)
@@ -74,10 +127,10 @@ epsilonParalellMax ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
 epsilonParalellMax xs = J(epsilonParalellMax' xs)
 
 epsilonParalellMax' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
-epsilonParalellMax' xs f = snd $ head $ sort $ parMap rdeepseq (\x -> (f x, x)) xs
+epsilonParalellMax' xs f = snd $ minimum $ parMap rdeepseq (\x -> (f x, x)) xs
 
 epsilonParalellMin ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
 epsilonParalellMin xs = J(epsilonParalellMin' xs)
 
 epsilonParalellMin' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
-epsilonParalellMin' xs f = snd $ head $ reverse $ sort $ parMap rdeepseq (\x -> (f x, x)) xs
+epsilonParalellMin' xs f = snd $ maximum $ parMap rdeepseq (\x -> (f x, x)) xs

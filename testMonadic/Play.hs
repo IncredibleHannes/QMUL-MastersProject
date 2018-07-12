@@ -2,7 +2,7 @@ module Play (gameName, optimalPlay, optimalOutcome, optimalStrategy) where
 
 import DependentMonadicBigotimes
 import J
-import Sudoku
+import ConnectThreeMatrixTuple
 
 optimalPlay :: [Move]
 optimalPlay = selection(bigotimes epsilons) p
