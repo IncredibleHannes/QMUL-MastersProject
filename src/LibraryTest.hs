@@ -58,14 +58,31 @@ epsilons :: [[Move] -> J R Move]
 epsilons = epsilons' []
 
 epsilons' :: [Move] -> [[Move] -> J R Move]
-epsilons' h = take (9 + length h) all
-  where all = epsilonX : epsilonO : all
-        epsilonX history = epsilonMaxTuple (getPossibleMoves (h ++ history))
-        epsilonO history = epsilonMinTuple (getPossibleMoves (h ++ history))
+epsilons' h = take (if (8 + length h) > (12 - length h) then 12 - length h else 9 + length h) all
+  where all = epsilonO : epsilonX : all
+        epsilonX history = epsilonMaxTupleParalell (getPossibleMoves (h ++ history))
+        epsilonO history = epsilonMinTupleParalell (getPossibleMoves (h ++ history))
+
+printBoard :: Board -> IO ()
+printBoard b = print $ fromLists $ reverse $ toLists (transpose b)
+
+isGameOver :: Board -> Bool
+isGameOver b = (value b /= 0) || (N `notElem` toList b)
+
+gameRound :: [Move] -> IO ()
+gameRound history = do
+  putStrLn "Please select your move (1-4): "
+  x <- readLn
+  if x < 1 || x > 4 then gameRound history else do
+    let aiMove = optimalStrategy p (epsilons' (history ++ [x])) (history ++ [x])
+    putStrLn $ "The AI Move is: " ++ show aiMove ++ "\n"
+    let newBoard = outcome X (history ++ [x] ++ [aiMove]) (matrix 4 3 (const N)) 0
+    printBoard $ fst newBoard
+    if isGameOver $ fst newBoard then putStrLn "The game is over. Thank You for playing!" else
+      gameRound (history ++ [x] ++ [aiMove])
+
 
 main :: IO ()
 main = do
-  let optimalGame = optimalPlay p epsilons
-  putStr ("An optimal play for " ++ gameName ++ " is "
-     ++ show optimalGame
-     ++ "\nand the optimal outcome is " ++ show (p optimalGame) ++ "\n")
+  gameRound []
+  readLn

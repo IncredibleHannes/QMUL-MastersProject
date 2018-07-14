@@ -61,7 +61,7 @@ epsilonMinTupleParalell' xs f = let list = sortOn fst (map (\x -> (f x, x)) xs) 
                             else snd $ head list
 
 epsilonMaxTupleParalell :: (NFData a) => [a] -> J (Int, Int) a
-epsilonMaxTupleParalell xs = J(epsilonMaxTuple' xs)
+epsilonMaxTupleParalell xs = J(epsilonMaxTupleParalell' xs)
 
 epsilonMaxTupleParalell' :: (NFData a) => [a] -> (a -> (Int, Int)) -> a
 epsilonMaxTupleParalell' [] _ = undefined
