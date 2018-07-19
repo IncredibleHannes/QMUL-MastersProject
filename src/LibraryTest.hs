@@ -73,13 +73,17 @@ gameRound :: [Move] -> IO ()
 gameRound history = do
   putStrLn "Please select your move (1-4): "
   x <- readLn
-  if x < 1 || x > 4 then gameRound history else do
+  if x `notElem` getPossibleMoves history then gameRound history else do
     let aiMove = optimalStrategy p (epsilons' (history ++ [x])) (history ++ [x])
-    putStrLn $ "The AI Move is: " ++ show aiMove ++ "\n"
     let newBoard = outcome X (history ++ [x] ++ [aiMove]) (matrix 4 3 (const N)) 0
-    printBoard $ fst newBoard
-    if isGameOver $ fst newBoard then putStrLn "The game is over. Thank You for playing!" else
-      gameRound (history ++ [x] ++ [aiMove])
+    if isGameOver $ fst newBoard
+      then do
+        printBoard $ fst newBoard
+        putStrLn "The game is over. Thank You for playing!"
+      else do
+        putStrLn $ "The AI Move is: " ++ show aiMove ++ "\n"
+        printBoard $ fst newBoard
+        gameRound (history ++ [x] ++ [aiMove])
 
 
 main :: IO ()
