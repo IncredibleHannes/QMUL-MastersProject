@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.List
+-- Module      :  Data.Selection
 -- Copyright   :  (c) Johannes Hartmann
 -- License     :  MIT
 --
@@ -8,49 +8,74 @@
 -- Stability   :  stable
 -- Portability :  portable
 --
--- Operations the Selection Monad
+-- The recently discovert selection monad provides an elegant way of implementing
+-- AI's for sequential games.
+-- This library is providing the definition of the selection and quantifier monad
+-- as introduced by Martin Escardó and Paulo Oliva in their paper from 2010:
+-- https://www.cs.bham.ac.uk/~mhe/papers/msfp2010/Escardo-Oliva-MSFP2010.pdf
+--
+-- A detailed introduction to this library as well as some example game
+-- implementations can be found in the master thesis of Johannes Hartmann:
+-- https://github.com/IncredibleHannes/QMUL-MastersProject
+--
+-- The library consists of the type definitions of the selection and quantifier
+-- monad, the definition of the otimes functions, a collection of minimum
+-- and maximum functions and a set of functions that compute the optimal play for
+-- a given sequential game.
 --
 -----------------------------------------------------------------------------
 
 
 module Data.Selection
   (
-  -- * Selection Monad J
+  -- * Selection Monad
+  -- | Definition of the selection monad
+  --
+  -- Definition is taken from: https://www.cs.bham.ac.uk/~mhe/papers/msfp2010/MSFP2010/haskell/modular/monadic/
     J(J)
   , selection
   , morphismJK
 
-  -- * Quantifier Monad K
+  -- * Quantifier Monad
+  -- | Definition of the quantifier monad
+  --
+  -- Definition is taken from: https://www.cs.bham.ac.uk/~mhe/papers/msfp2010/MSFP2010/haskell/modular/monadic/
   , K(K)
   , quantifier
 
   -- * Bigotimes
+  -- | Definition of the selection monad
+  --
+  -- Definition is taken from: https://www.cs.bham.ac.uk/~mhe/papers/msfp2010/MSFP2010/haskell/modular/monadic/
   , varotimes
   , otimes
   , bigotimes
 
-  -- * minimum and maximum implementations
-  -- ** generic implementations
+  -- * Min|max functions
+  -- | Definition of different minimum and maximum functions
+
+  -- ** Generic
   , epsilonMin
   , epsilonMax
-  -- ** for {-1,0,1}
+  -- ** Win|Draw|Lose
   , epsilonMinThree
   , epsilonMaxThree
-  -- ** for booleans
+  -- ** Booleans
   , epsilonMinBool
   , epsilonMaxBool
-  -- ** for length tracking tuples ({1,0,-1}, Int)
+  -- ** Length tracking tuples
   , epsilonMinTuple
   , epsilonMaxTuple
-  -- ** paralell implementations
-  -- *** generic
+  -- ** Paralell versions
+  -- *** Generic
   , epsilonMaxParalell
   , epsilonMinParalell
-  -- *** length tracking tuples ({1,0,-1}, Int)
+  -- *** Length tracking tuples
   , epsilonMaxTupleParalell
   , epsilonMinTupleParalell
 
   -- * Optimal game strategies
+  -- | Definition of the functions that calculate the optimal play
   , optimalPlay
   , optimalOutcome
   , optimalStrategy

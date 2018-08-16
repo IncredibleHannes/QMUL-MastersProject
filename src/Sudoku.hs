@@ -62,6 +62,11 @@ getPossibleMoves xs = filter (\(x, y, z) -> not $ findMove (x, y) xs)
 p :: [Move] -> R
 p ms = wins(outcome ms startingBoard)
 
+outcome :: [Move] -> Board -> Board
+outcome [] b     = b
+outcome (x:xs) b = let nb = insert x b in if wins nb then outcome xs nb else nb
+
+
 epsilons :: [[Move] -> J R Move]
 epsilons = take 5 all
   where all = epsilon' : all

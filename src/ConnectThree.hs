@@ -51,7 +51,7 @@ p :: [Move] -> R
 p ms = value(outcome X ms [[]])
 
 epsilons :: [[Move] -> J R Move]
-epsilons = take 9 all
+epsilons = take 6 all
   where all = epsilonX : epsilonO : all
         epsilonX history = epsilonMaxThree (getPossibleMoves history)
         epsilonO history = epsilonMinThree (getPossibleMoves history)

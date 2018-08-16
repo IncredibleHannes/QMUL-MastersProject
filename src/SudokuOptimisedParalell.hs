@@ -2,6 +2,7 @@
   ________|__1__|__2__|__3__|__4__|__5__|__6__|__7__|__8__|__9__|__10__|__11__|__12__|
   timeOld | 0.05| 0.11| 0.22| 0.44| 0.93| 1.87| 3.96| 7.91|16.51| 34.25| 68.33|147.08|
   timeNew | 0.01| 0.01| 0.03| 0.07| 0.20| 0.43| 1.04| 2.63| 7.65| 16.32| 37.90|103.46|
+  timesPar| 0.10| 0.21| 0.59| 5.16|50.13|500.1| -   | -   |  -  |  -   |   -  |  -   |
 -}
 
 import qualified Data.List      as L
@@ -88,9 +89,9 @@ outcome [] b     = b
 outcome (x:xs) b = let nb = insert x b in if wins nb then outcome xs nb else nb
 
 epsilons :: [[Move] -> J R Move]
-epsilons = take 12 all
+epsilons = take 5 all
   where all = epsilon' : all
-        epsilon' history = epsilonMaxBool (getPossibleMoves (startingMoves ++ history))
+        epsilon' history = epsilonMaxParalell (getPossibleMoves (startingMoves ++ history))
 
 main :: IO ()
 main = do

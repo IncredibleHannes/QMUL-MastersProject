@@ -1,5 +1,5 @@
 {-
-  Times: 7: |6: 44s |5: 3.77
+  Times: 6: 44s |5: 3.77 | 4: 0.54 | 3: 0.41 | 2: 0.11 | 1: 0.10
 -}
 import qualified Data.List      as L
 import           Data.Matrix
@@ -17,7 +17,7 @@ data ChessPice = N | Queen Colour | King Colour | Rook Colour | Bishop Colour
   deriving (Eq, Show)
 
 startBoard :: Board
-startBoard = setElem (Rook W) (1,8) $ setElem (Rook W) (1,1) $ setElem (King W) (1,5) $
+startBoard = setElem (Rook W) (1,4) $ setElem (Rook W) (1,1) $ setElem (King W) (2,4) $
              setElem (King B) (8,5) (matrix 8 8 (const N))
 
 wins :: Board -> Colour -> Bool
@@ -35,26 +35,21 @@ value b  | wins b W  = 1
          | wins b B  = -1
          | otherwise = 0
 
-outcome :: Colour -> [Move] -> Board -> Int -> (Board,Int)
-outcome _ [] b i       = (b, i)
-outcome c (m : ms) b i = let nb = insert b m in
-                         if wins nb c then (nb, i+1) else outcome (changeColour c) ms nb (i+1)
-
 changeColour :: Colour -> Colour
 changeColour B = W
 changeColour W = B
 
 getPossibleMoves' :: Board -> Colour -> [Move]
-getPossibleMoves' b c = concat [getMoves' (x,y) b c | x <- [1..8], y <- [1..8], getMoves' (x,y) b c /= [] ]
+getPossibleMoves' b c = concat [getMoves (x,y) b c | x <- [1..8], y <- [1..8], getMoves (x,y) b c /= [] ]
 
 getPossibleMoves :: [Move] -> [Move]
-getPossibleMoves m = concat [getMoves' (x,y) b c | x <- [1..8], y <- [1..8], getMoves' (x,y) b c /= [] ]
+getPossibleMoves m = concat [getMoves (x,y) b c | x <- [1..8], y <- [1..8], getMoves (x,y) b c /= [] ]
   where
     b = insertMoves startBoard m
     c = if (length m `mod` 2) == 1 then B else W
 
-getMoves' :: Position -> Board -> Colour -> [Move]
-getMoves' p b c1 = case b ! p of
+getMoves :: Position -> Board -> Colour -> [Move]
+getMoves p b c1 = case b ! p of
                      N          -> []
                      (King c2)   -> if c1 == c2 then getKingMoves p else []
                      (Queen c2)  -> if c1 == c2 then getQueenMoves p b else []
@@ -122,11 +117,16 @@ insertMoves = foldl insert
 insert :: Board -> Move -> Board
 insert b (p1, p2) = if fst p2 > 8 || snd p2 > 8 then undefined else setElem N p1 (setElem (b ! p1) p2 b)
 
+outcome :: Colour -> [Move] -> Board -> Int -> R
+outcome _ [] b i       = (value b, i)
+outcome c (m : ms) b i = let nb = insert b m in
+                         if wins nb c then (value nb, i+1) else outcome (changeColour c) ms nb (i+1)
+
 p :: [Move] -> R
-p ms = let o = outcome W ms startBoard 0 in (value $ fst o, snd o)
+p ms = outcome W ms startBoard 0
 
 epsilons :: [[Move] -> J R Move]
-epsilons = take 5 all
+epsilons = take 7 all
   where all = epsilonO : epsilonX : all
         epsilonX history = epsilonMinTupleParalell (getPossibleMoves history)
         epsilonO history = epsilonMaxTupleParalell (getPossibleMoves history)

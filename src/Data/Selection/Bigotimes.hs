@@ -1,3 +1,7 @@
+-- | Definition of the selection monad
+--
+-- Definition is taken from: https://www.cs.bham.ac.uk/~mhe/papers/msfp2010/MSFP2010/haskell/modular/monadic/
+
 module Data.Selection.Bigotimes (varotimes, otimes, bigotimes) where
 
 otimes :: Monad m => m x -> (x -> m y) -> m(x, y)

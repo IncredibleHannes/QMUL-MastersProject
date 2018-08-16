@@ -45,11 +45,10 @@ changePlayer X = O
 changePlayer O = X
 
 insert :: Move -> Player -> Board -> Board
-insert m = insert' (m,1)
-  where
-    insert' (x,y) p b = if b ! (x,y) == N
-                        then setElem p (x,y) b
-                        else insert' (x,y+1) p b
+insert m = insert' (m, 1)
+  where insert' (x, y) p b = if b ! (x, y) == N
+                             then setElem p (x, y) b
+                             else insert' (x, y+1) p b
 
 getPossibleMoves :: [Move] -> [Move]
 getPossibleMoves [] = [1..5]
@@ -59,7 +58,7 @@ p :: [Move] -> R
 p ms = value(outcome X ms (matrix 5 3 (const N)))
 
 epsilons :: [[Move] -> J R Move]
-epsilons = take 9 all
+epsilons = take 7 all
   where all = epsilonX : epsilonO : all
         epsilonX history = epsilonMaxThree (getPossibleMoves history)
         epsilonO history = epsilonMinThree (getPossibleMoves history)

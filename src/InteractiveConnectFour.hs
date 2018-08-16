@@ -1,9 +1,8 @@
-
 import qualified Data.List      as L
 import           Data.Matrix
 import           Data.Selection
 
-gameName = "ConnectThreeMatrixTuple"
+gameName = "InteractiveConnectFour"
 
 type R = (Int,Int)
 type Move = Int
@@ -15,13 +14,14 @@ wins :: Board -> Player -> Bool
 wins = checkWin 1 1
   where
     checkWin :: Int -> Int -> Board -> Player -> Bool
-    checkWin 3 3 _ _ = False
-    checkWin 4 y b p = ((b ! (4, y) == p) && (row 4 y b p || colum 4 y b p || left 4 y b p || right 4 y b p)) || checkWin 1 (y + 1) b p
+    checkWin 7 6 _ _ = False
+    checkWin 7 y b p = ((b ! (7, y) == p) && (row 7 y b p || colum 7 y b p || left 7 y b p || right 7 y b p)) || checkWin 1 (y + 1) b p
     checkWin x y b p = ((b ! (x, y) == p) && (row x y b p || colum x y b p || left x y b p || right x y b p)) || checkWin (x + 1) y b p
-    row x y b p      = x < 3 && (b ! (x, y) == p && b ! (x+1, y) == p && b ! (x+2, y) == p)
-    colum x y b p    = y == 1 && (b ! (x, y) == p && b ! (x, y+1) == p && b ! (x, y+2) == p)
-    left x y b p     = y == 1 && x < 3 && (b ! (x, y) == p && b ! (x+1, y+1) == p && b ! (x+2, y+2) == p)
-    right x y b p    = y == 1 && x > 2 && (b ! (x, y) == p && b ! (x-1, y+1) == p && b ! (x-2, y+2) == p)
+    row x y b p      = x < 5 && (b ! (x, y) == p && b ! (x+1, y) == p && b ! (x+2, y) == p && b ! (x+3, y) == p)
+    colum x y b p    = y < 4 && (b ! (x, y) == p && b ! (x, y+1) == p && b ! (x, y+2) == p && b ! (x, y+3) == p)
+    left x y b p     = y < 4 && x < 5 && (b ! (x, y) == p && b ! (x+1, y+1) == p && b ! (x+2, y+2) == p && b ! (x+3, y+3) == p)
+    right x y b p    = y < 4 && x > 3 && (b ! (x, y) == p && b ! (x-1, y+1) == p && b ! (x-2, y+2) == p && b ! (x-3, y+3) == p)
+
 
 value :: Board -> Int
 value b  | wins b X  = 1
@@ -31,8 +31,7 @@ value b  | wins b X  = 1
 outcome :: Player -> [Move] -> Board -> Int -> (Board,Int)
 outcome _ [] b i       = (b, i)
 outcome p (m : ms) b i = let nb = insert m p b in
-                         if wins nb p then (nb, i+1) else outcome (changePlayer p) ms nb (i+1)
-
+                        if wins nb p then (nb, i+1) else outcome (changePlayer p) ms nb (i+1)
 changePlayer :: Player -> Player
 changePlayer X = O
 changePlayer O = X
@@ -45,17 +44,17 @@ insert m = insert' (m,1)
                         else insert' (x,y+1) p b
 
 getPossibleMoves :: [Move] -> [Move]
-getPossibleMoves [] = [1..4]
-getPossibleMoves xs = filter (\x -> length (L.elemIndices x xs) < 3) [1..4]
+getPossibleMoves [] = [1..7]
+getPossibleMoves xs = filter (\x -> length (L.elemIndices x xs) < 6) [1..7]
 
 p :: [Move] -> R
-p ms = let o = outcome X ms (matrix 4 3 (const N)) 0 in (value $ fst o, snd o)
+p ms = let o = outcome X ms (matrix 7 6 (const N)) 0 in (value $ fst o, snd o)
 
 epsilons :: [[Move] -> J R Move]
 epsilons = epsilons' []
 
 epsilons' :: [Move] -> [[Move] -> J R Move]
-epsilons' h = take (if (8 + length h) > (12 - length h) then 12 - length h else 9 + length h) all
+epsilons' h = take (if length h > 35 then 42 - length h else 6) all
   where all = epsilonO : epsilonX : all
         epsilonX history = epsilonMaxTupleParalell (getPossibleMoves (h ++ history))
         epsilonO history = epsilonMinTupleParalell (getPossibleMoves (h ++ history))
@@ -68,11 +67,11 @@ isGameOver b = (value b /= 0) || (N `notElem` toList b)
 
 gameRound :: [Move] -> IO ()
 gameRound history = do
-  putStrLn "Please select your move (1-4): "
+  putStrLn "Please select your move (1-7): "
   x <- readLn
   if x `notElem` getPossibleMoves history then gameRound history else do
     let aiMove = optimalStrategy p (epsilons' (history ++ [x])) (history ++ [x])
-    let newBoard = outcome X (history ++ [x] ++ [aiMove]) (matrix 4 3 (const N)) 0
+    let newBoard = outcome X (history ++ [x] ++ [aiMove]) (matrix 7 6 (const N)) 0
     if isGameOver $ fst newBoard
       then do
         printBoard $ fst newBoard

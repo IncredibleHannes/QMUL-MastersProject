@@ -1,3 +1,4 @@
+  -- | Definition of different minimum and maximum functions
 
 module Data.Selection.MinMax
   ( epsilonMax, epsilonMin
@@ -55,7 +56,7 @@ epsilonMinTupleParalell xs = J(epsilonMinTupleParalell' xs)
 
 epsilonMinTupleParalell' :: (NFData a) => [a] -> (a -> (Int, Int)) -> a
 epsilonMinTupleParalell' [] _ = undefined
-epsilonMinTupleParalell' xs f = let list = sortOn fst (map (\x -> (f x, x)) xs) in
+epsilonMinTupleParalell' xs f = let list = sortOn fst (parMap rdeepseq (\x -> (f x, x)) xs) in
                             if  fst (fst $ head list) > 0
                             then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
                             else snd $ head list
