@@ -1,4 +1,7 @@
 # Selection Monad
+A detailed explanation of this library and example games can be found at the
+corresponding master thesis:
+https://github.com/IncredibleHannes/QMUL-MastersProject/blob/master/paper.pdf
 
 ## Library
 
