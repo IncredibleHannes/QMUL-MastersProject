@@ -1,8 +1,25 @@
-{-
-  An optimal play for ConnectThreeMatrixTuple is [2,4,3,1,2,2,3,5,1]
-  and the optimal outcome is (1,9)
-  (1834.56 secs, 515,446,317,680 bytes)
-  Time paralell: 22.855s
+{- |
+   Module     : ConnectThreeMatrixTuple
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Connect Three implementation. This version uses tuples as outcome type.
+   The wins function is optimised saving some computations, and the Matrix
+   library is used to support O(1) acces times. It also supports paralellism. To
+   run it parallel compile it with the following command:
+
+   >  ghc -O2 -threaded --make ConnectThreeMatrixTuple.hs
+
+   The outcome of this function is the following:
+
+   An optimal play for ConnectThreeMatrixTuple is [2,4,3,1,2,2,3,5,1]
+   and the optimal outcome is (1,9)
+   (1834.56 secs, 515,446,317,680 bytes)
+
+
+   Time paralell: 22.855s
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
 -}
 
 import qualified Data.List      as L

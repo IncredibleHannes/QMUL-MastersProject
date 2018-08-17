@@ -1,6 +1,24 @@
-{-
-  Times: 6: 44s |5: 3.77 | 4: 0.54 | 3: 0.41 | 2: 0.11 | 1: 0.10
+{- |
+   Module     : SimplifiedChess
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Chess implementation. This version is able to solve easy chess endgames
+   For seting up your own endgame adjust the startBoard variable. This implementation
+   supports the following chess pice: King, Queen, Rook, Bishop
+   This version uses tuples as outcome type.
+   The Matrix library is used to support O(1) acces times. It also supports paralellism.
+   To run it parallel compile it with the following command:
+
+   >  ghc -O2 -threaded --make SimplifiedChess.hs
+
+   The runtimes are:
+
+   Times: 6: 44s |5: 3.77 | 4: 0.54 | 3: 0.41 | 2: 0.11 | 1: 0.10
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
 -}
+
 import qualified Data.List      as L
 import           Data.Matrix
 import           Data.Selection

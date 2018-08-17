@@ -1,7 +1,20 @@
-{-
-  _____|__1__|__2__|__3__|__4__|__5__|__6__|__7__|__8__|__9__|__10__|__11__|__12__|
-  time | 0.05| 0.11| 0.22| 0.44| 0.93| 1.87| 3.96| 7.91|16.51| 34.25| 68.33|147.08|
+{- |
+   Module     : Sudoku
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Chess implementation. This version is able to solve easy sudoku quizes
+   with up to 12 gaps. To solve your own puzzle, the starting moves variable need
+   to be ajusted. The Matrix library is used to support O(1) acces times.
+
+   The runtimes are:
+
+   _____|__1__|__2__|__3__|__4__|__5__|__6__|__7__|__8__|__9__|__10__|__11__|__12__|
+   time | 0.05| 0.11| 0.22| 0.44| 0.93| 1.87| 3.96| 7.91|16.51| 34.25| 68.33|147.08|
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
 -}
+
 
 import qualified Data.List      as L
 import           Data.Matrix

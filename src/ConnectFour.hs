@@ -1,4 +1,12 @@
-
+{- |
+   Module     : ConnectFour
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Connect four implementation. This version does not have any performance
+   optimisations
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
+-}
 import qualified Data.List      as L
 import           Data.Selection
 

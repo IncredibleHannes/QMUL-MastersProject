@@ -1,7 +1,19 @@
-{-
-  An optimal play for ConnectThreeMatrix is [4,1,4,1,4,1,5,2,5]
-  and the optimal outcome is 1
-  (1959.94 secs, 590,844,013,624 bytes)
+{- |
+   Module     : ConnectThreeMatrixTuple
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Connect four implementation.
+   The wins function is optimised saving some computations, and the Matrix
+   library is used to support O(1) acces times.
+
+   The output of the computation is the following:
+
+   An optimal play for ConnectThreeMatrix is [4,1,4,1,4,1,5,2,5]
+   and the optimal outcome is 1
+   (1959.94 secs, 590,844,013,624 bytes)
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
 -}
 
 module ConnectThreeMatrix (gameName, R, Move, p, epsilons) where

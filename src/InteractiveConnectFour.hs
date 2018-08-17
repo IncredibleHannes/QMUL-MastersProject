@@ -1,3 +1,19 @@
+{- |
+   Module     : InteractiveConnectFour
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Interactive Connect Four implementation. In this version a human Player
+   can play against the computer. This version uses tuples as outcome type.
+   The wins function is optimised saving some computations, and the Matrix
+   library is used to support O(1) acces times. It also supports paralellism. To
+   run it parallel compile it with the following command:
+
+   >  ghc -O2 -threaded --make InteractiveConnectFour.hs
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
+-}
+
 import qualified Data.List      as L
 import           Data.Matrix
 import           Data.Selection

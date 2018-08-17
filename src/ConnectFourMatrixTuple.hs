@@ -1,6 +1,21 @@
-{-
-    ________|__1__|__2__|__3__|__4__|__5__|__6__|__7__|__8__|__9__|
-    timeOld | 1.91| 1.85| 0.12| 0.13| 0.18| 0.47| 3.09| 27.0|236.9|
+{- |
+   Module     : ConnectFourMatrixTuple
+   Copyright  : Copyright (C) 2018 Johannes Hartmann
+   License    : MIT
+   Maintainer : Johannes Hartmann <Johannes.Hartmann.Calw@web.de>
+   Example Connect four implementation. This version uses tuples as outcome type.
+   The wins function is optimised saving some computations, and the Matrix
+   library is used to support O(1) acces times. It also supports paralellism. To
+   run it parallel compile it with the following command:
+
+   >  ghc -O2 -threaded --make ConnectFourMatrixTuple.hs
+
+   The computation time depending of the count of moves that are explored:
+
+   ________|__1__|__2__|__3__|__4__|__5__|__6__|__7__|__8__|__9__|
+   time    | 1.91| 1.85| 0.12| 0.13| 0.18| 0.47| 3.09| 27.0|236.9|
+
+   Written by Johannes Hartmann, Johannes.Hartmann.Calw@web.de
 -}
 
 import qualified Data.List      as L
