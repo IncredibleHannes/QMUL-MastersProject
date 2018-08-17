@@ -53,7 +53,7 @@ library
                        Data.Selection.Bigotimes
 
   -- Modules included in this library but not exported.
-  other-modules:       Data.Matrix
+  -- other-modules:       Data.Matrix
 
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:
@@ -65,4 +65,14 @@ library
   hs-source-dirs:      src
 
   -- Base language which the package is written in.
+  default-language:    Haskell2010
+
+test-suite  QMUL-MastersProject-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             tests.hs
+  build-depends:       base
+                     , QMUL-MastersProject
+                     , HUnit
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010

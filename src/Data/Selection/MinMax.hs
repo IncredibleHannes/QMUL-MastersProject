@@ -30,13 +30,25 @@ epsilonMax' :: (Ord b) => [a] -> (a -> b) -> a
 epsilonMax' [] _ = undefined
 epsilonMax' xs f = last $ sortOn f xs
 
+epsilonMinParalell ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
+epsilonMinParalell xs = J(epsilonMinParalell' xs)
+
+epsilonMinParalell' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
+epsilonMinParalell' xs f = snd $ minimum $ parMap rdeepseq (\x -> (f x, x)) xs
+
+epsilonMaxParalell ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
+epsilonMaxParalell xs = J(epsilonMaxParalell' xs)
+
+epsilonMaxParalell' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
+epsilonMaxParalell' xs f = snd $ maximum $ parMap rdeepseq (\x -> (f x, x)) xs
+
 epsilonMinTuple :: [a] -> J (Int, Int) a
 epsilonMinTuple xs = J(epsilonMinTuple' xs)
 
 epsilonMinTuple' :: [a] -> (a -> (Int, Int)) -> a
 epsilonMinTuple' [] _ = undefined
 epsilonMinTuple' xs f = let list = sortOn fst (map (\x -> (f x, x)) xs) in
-                            if  fst (fst $ head list) > 0
+                            if  fst (fst $ head list) >= 0
                             then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
                             else snd $ head list
 
@@ -57,7 +69,7 @@ epsilonMinTupleParalell xs = J(epsilonMinTupleParalell' xs)
 epsilonMinTupleParalell' :: (NFData a) => [a] -> (a -> (Int, Int)) -> a
 epsilonMinTupleParalell' [] _ = undefined
 epsilonMinTupleParalell' xs f = let list = sortOn fst (parMap rdeepseq (\x -> (f x, x)) xs) in
-                            if  fst (fst $ head list) > 0
+                            if  fst (fst $ head list) >= 0
                             then snd $ last $ filter (\x -> fst (fst x) == fst (fst $ head list)) list
                             else snd $ head list
 
@@ -114,15 +126,3 @@ epsilonMaxBool' :: [a] -> (a -> Bool) -> a
 epsilonMaxBool' [] _     = undefined
 epsilonMaxBool' [x] _    = x
 epsilonMaxBool' (x:xs) f = if f x then x else epsilonMaxBool' xs f
-
-epsilonMinParalell ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
-epsilonMinParalell xs = J(epsilonMinParalell' xs)
-
-epsilonMinParalell' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
-epsilonMinParalell' xs f = snd $ minimum $ parMap rdeepseq (\x -> (f x, x)) xs
-
-epsilonMaxParalell ::(NFData a, NFData b, Ord a, Ord b) => [b] -> J a b
-epsilonMaxParalell xs = J(epsilonMaxParalell' xs)
-
-epsilonMaxParalell' :: (NFData a, NFData b, Ord a, Ord b) => [a] -> (a -> b) -> a
-epsilonMaxParalell' xs f = snd $ maximum $ parMap rdeepseq (\x -> (f x, x)) xs
